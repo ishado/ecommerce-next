@@ -1,10 +1,11 @@
 import { List } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 
 function ProductItem({product}) {
   return (
-    <div className="p-1 hover:border hover:shadow-md rounded-lg border-teal-400 hover:cursor-pointer">
+    <Link href={`/product-details/${product?.id}`} className="p-1 hover:border hover:shadow-md rounded-lg border-teal-400 hover:cursor-pointer">
       <Image
         src={product?.attributes?.banner?.data?.attributes?.url}
         alt="banner-card"
@@ -25,7 +26,7 @@ function ProductItem({product}) {
         <h2>{product?.attributes?.price}</h2>
       </div>
       {/* {product?.attributes?.description} <br /> */}
-    </div>
+    </Link>
   );
 }
 
