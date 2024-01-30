@@ -1,8 +1,43 @@
-import SkeletonProductInfo from '@/app/product-details/_components/SkeletonProductInfo';
+'use client'
+
+import SkeletonProductInfo from '/app/product-details/_components/SkeletonProductInfo';
+import { useUser } from '@clerk/nextjs';
 import { AlertOctagon, BadgeCheck, ShoppingCart } from 'lucide-react';
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useContext } from 'react'
+import CartApis from '../../_utils/CartApis'
+import { CartContext } from "../../_context/CartContext";
 
 function ProductInfo({product}) {
+  const {user} = useUser();
+  const router = useRouter();
+  const {cart , setCart } = useContext(CartContext);
+  const handleAddToCart = () => {
+    if(!user){
+      router.push('/sign-in');
+    }else {
+      // Logic to add to Cart
+      const data = {
+        data: {
+          username : user.fullName,
+          email : user.primaryEmailAddress.emailAddress,
+          products : [product?.id]
+        }
+      }
+      CartApis.addToCart(data).then(res=>{
+        console.log("Cart Created Successfully");
+        setCart((oldCart) => [
+          ...oldCart,
+          {
+            id: res?.data?.data?.id,
+            product,
+          },
+        ]);
+      }).catch(error => {
+        console.log('Error while creating Cart : ', error);
+      });
+    }
+  };
   return (
     <div>
         {product?.id ?
@@ -25,7 +60,7 @@ function ProductInfo({product}) {
         <h2 className="text-[32px] text-primary mt-3">
           {product?.attributes?.price}
         </h2>
-        <button className="flex gap-2 bg-primary text-white hover:bg-teal-600 py-2 px-4 rounded-md mt-5">
+        <button onClick={()=>handleAddToCart()} className="flex gap-2 bg-primary text-white hover:bg-teal-600 py-2 px-4 rounded-md mt-5">
           <ShoppingCart />
           Add to cart
         </button>
