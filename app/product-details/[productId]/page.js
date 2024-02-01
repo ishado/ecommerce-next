@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 
 function ProductDetails({params}) {
     const path = usePathname();
-    console.log(path);
+    // console.log(path);
     const [productDetails, setProductDetails] = useState({});
     const [productList, setProductList] = useState([]);
     useEffect(() => {
@@ -18,14 +18,14 @@ function ProductDetails({params}) {
     }, [params?.productId])
     const getProductById_ = ()=> {
         ProductApis.getProductById(params?.productId).then(res=>{
-            console.log('Product Item :', res.data.data);
+            // console.log('Product Item :', res.data.data);
             setProductDetails(res.data.data),
             getProductListByCategory(res.data.data)
         })
     }
     const getProductListByCategory = (product)=>{
         ProductApis.getProductByCategory(product?.attributes?.category).then(res=>{
-            console.log('Product By Category :', res?.data?.data);
+            // console.log('Product By Category :', res?.data?.data);
             setProductList(res?.data?.data)
         })
     }

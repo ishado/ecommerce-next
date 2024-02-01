@@ -8,7 +8,7 @@ import CartApis from "../_utils/CartApis";
 import Cart from "../_components/Cart";
 
 function Header() {
-  console.log('href',window.location.href);
+  // console.log('href',window.location.href);
   const [isLoggedIn, setIsLoggedIn ] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const {cart, setCart} = useContext(CartContext);
@@ -21,7 +21,7 @@ function Header() {
   },[user])
   const getCartItems = ()=>{
     CartApis.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res=>{
-      console.log('response from cart items',res?.data?.data);
+      // console.log('response from cart items',res?.data?.data);
       res?.data?.data.forEach(citem => {
         setCart((oldCart)=>[
           ...oldCart,
